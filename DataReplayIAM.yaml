@@ -1,0 +1,70 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Metadata: 
+  License: Apache-2.0
+  Description: 'AWS CloudFormation template for DataReplay security'
+Parameters: 
+  EnvType: 
+    Description: Environment type.
+    Default: DEV
+    Type: String
+    AllowedValues: 
+      - DEV
+      - INT
+      - PERF
+      - PROD
+Conditions: 
+  CreateProdResources: !Equals [ !Ref EnvType, PROD ]
+  LowerEnvironment:
+    !Not [!Equals [!Ref EnvType, PROD]]
+Resources:
+  DataReplayProdPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Condition: CreateProdResources
+    Properties:
+      Description: "Policy for DataReplay Production"
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - cloudformation:CreateChangeSet
+          - cloudformation:CreateStack
+          - cloudformation:DescribeAccountLimits
+          - cloudformation:DescribeChangeSet
+          - cloudformation:DescribeStackEvents
+          - cloudformation:DescribeStackResource
+          - cloudformation:DescribeStackResources
+          - cloudformation:DescribeStacks
+          - cloudformation:GetStackPolicy
+          - cloudformation:ListChangeSets
+          - cloudformation:ListStackResources
+          - cloudformation:ListStacks
+          Resource:
+            !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/DataReplay-PROD-*
+  DataReplayDevPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Condition: LowerEnvironment
+    Properties:
+      Description: "Policy for DataReplay Development"
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - cloudformation:*
+          Resource:
+            !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/DataReplay-DEV-*
+  DataReplayDevGroup:
+    Condition: LowerEnvironment
+    Type: AWS::IAM::Group
+    Properties:
+      Path: "/DataReplay/"
+      ManagedPolicyArns: 
+      - !Ref DataReplayDevPolicy
+  DataReplayProdGroup:
+    Condition: CreateProdResources
+    Type: AWS::IAM::Group
+    Properties:
+      Path: "/DataReplay/"
+      ManagedPolicyArns: 
+      - !Ref DataReplayProdPolicy
