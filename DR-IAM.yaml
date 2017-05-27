@@ -116,7 +116,7 @@ Resources:
             Sid: "Allow use of the key"
             Effect: "Allow"
             Principal: 
-              AWS: Ref: DataRepCFRole
+              AWS: !GetAtt DataRepCFRole.Arn
             Action: 
               - "kms:Encrypt"
               - "kms:Decrypt"
