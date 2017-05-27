@@ -17,6 +17,22 @@ Conditions:
   LowerEnvironment:
     !Not [!Equals [!Ref EnvType, PROD]]
 Resources:
+  DataRepCFRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Principal: 
+              Service: 
+                - "cloudformation.amazonaws.com"
+            Action: 
+              - "sts:AssumeRole"
+      Path: "/DataRep/"
+      ManagedPolicyArns: 
+      - !Ref DataRepDevPolicy
   DataRepProdPolicy:
     Type: AWS::IAM::ManagedPolicy
     Condition: CreateProdResources
@@ -80,8 +96,7 @@ Resources:
             Sid: "Allow administration of the key"
             Effect: "Allow"
             Principal: 
-              AWS:
-                !Sub arn:aws:iam::${AWS::AccountId}:group/DEMO-InfoSec
+              AWS: "arn:aws:iam::441805543767:role/DEMO-IAMFull"
             Action: 
               - "kms:Create*"
               - "kms:Describe*"
@@ -96,3 +111,15 @@ Resources:
               - "kms:ScheduleKeyDeletion"
               - "kms:CancelKeyDeletion"
             Resource: "*"
+        - 
+          Sid: "Allow use of the key"
+          Effect: "Allow"
+          Principal: 
+            AWS: DataRepCFRole
+          Action: 
+            - "kms:Encrypt"
+            - "kms:Decrypt"
+            - "kms:ReEncrypt*"
+            - "kms:GenerateDataKey*"
+            - "kms:DescribeKey"
+          Resource: "*"
