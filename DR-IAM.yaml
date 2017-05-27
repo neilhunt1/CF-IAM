@@ -111,15 +111,3 @@ Resources:
               - "kms:ScheduleKeyDeletion"
               - "kms:CancelKeyDeletion"
             Resource: "*"
-          - 
-            Sid: "Allow use of the key"
-            Effect: "Allow"
-            Principal: 
-              AWS: DataRepCFRole
-            Action: 
-              - "kms:Encrypt"
-              - "kms:Decrypt"
-              - "kms:ReEncrypt*"
-              - "kms:GenerateDataKey*"
-              - "kms:DescribeKey"
-            Resource: "*"
