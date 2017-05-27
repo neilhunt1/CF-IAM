@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Metadata: 
   License: Apache-2.0
-  Description: 'AWS CloudFormation template for DataReplay security'
+  Description: 'AWS CloudFormation template for DataRep security'
 Parameters: 
   EnvType: 
     Description: Environment type.
@@ -17,11 +17,11 @@ Conditions:
   LowerEnvironment:
     !Not [!Equals [!Ref EnvType, PROD]]
 Resources:
-  DataReplayProdPolicy:
+  DataRepProdPolicy:
     Type: AWS::IAM::ManagedPolicy
     Condition: CreateProdResources
     Properties:
-      Description: "Policy for DataReplay Production"
+      Description: "Policy for DataRep Production"
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -40,12 +40,12 @@ Resources:
           - cloudformation:ListStackResources
           - cloudformation:ListStacks
           Resource:
-            !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/DataReplay-PROD-*
-  DataReplayDevPolicy:
+            !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/DataRep-PROD-*
+  DataRepDevPolicy:
     Type: AWS::IAM::ManagedPolicy
     Condition: LowerEnvironment
     Properties:
-      Description: "Policy for DataReplay Development"
+      Description: "Policy for DataRep Development"
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -53,18 +53,19 @@ Resources:
           Action:
           - cloudformation:*
           Resource:
-            !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/DataReplay-DEV-*
-  DataReplayDevGroup:
+            !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/DataRep-DEV-*
+  DataRepDevGroup:
     Condition: LowerEnvironment
     Type: AWS::IAM::Group
     Properties:
-      Path: "/DataReplay/"
+      Path: "/DataRep/"
       ManagedPolicyArns: 
-      - !Ref DataReplayDevPolicy
-  DataReplayProdGroup:
+      - !Ref DataRepDevPolicy
+  DataRepProdGroup:
     Condition: CreateProdResources
     Type: AWS::IAM::Group
     Properties:
-      Path: "/DataReplay/"
+      Path: "/DataRep/"
       ManagedPolicyArns: 
-      - !Ref DataReplayProdPolicy
+      - !Ref DataRepProdPolicy
+  
