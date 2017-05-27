@@ -33,6 +33,15 @@ Resources:
       Path: "/DataRep/"
       ManagedPolicyArns: 
       - !Ref DataRepIAMPolicy
+  DataRepS3Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action: ['sts:AssumeRole']
+          Effect: Allow
+          Principal:
+            Service: [s3.amazonaws.com]
   DataRepIAMPolicy:
     Type: AWS::IAM::ManagedPolicy
     Condition: LowerEnvironment
@@ -92,3 +101,8 @@ Resources:
               - "kms:GenerateDataKey*"
               - "kms:DescribeKey"
             Resource: "*"
+Outputs:
+  DataRepKmsKeyId:
+    Description: ARN of the DataRep KMS key
+    Value: !GetAtt DataRepKMSKey.Arn
+    Export: !Join [ "-", [ !Ref "AWS::StackName", "KmsKeyId" ] ]
