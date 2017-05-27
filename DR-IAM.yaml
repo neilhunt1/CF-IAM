@@ -80,7 +80,8 @@ Resources:
             Sid: "Allow administration of the key"
             Effect: "Allow"
             Principal: 
-              AWS: "arn:aws:iam::${AWS::AccountId}:group/DEMO-InfoSec"
+              AWS:
+                !Sub arn:aws:iam::${AWS::AccountId}:group/DEMO-InfoSec
             Action: 
               - "kms:Create*"
               - "kms:Describe*"
