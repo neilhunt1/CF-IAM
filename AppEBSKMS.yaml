@@ -22,5 +22,5 @@ Resources:
       Size: 50
       AvailabilityZone: us-east-1a
       Encrypted: true
-      KmsKeyId: Fn::ImportValue:
-        !Sub "${SecurityStack}-KmsKeyId"
+      KmsKeyId:
+        'Fn::ImportValue': !Sub '${SecurityStack}-KmsKeyId'
