@@ -74,7 +74,7 @@ Resources:
       Description: "A sample key"
       KeyPolicy: 
         Version: "2012-10-17"
-        Id: "key-default-1"
+        Id: "KMSKey-DataRep"
         Statement: 
           - 
             Sid: "Allow administration of the key"
@@ -94,16 +94,4 @@ Resources:
               - "kms:Delete*"
               - "kms:ScheduleKeyDeletion"
               - "kms:CancelKeyDeletion"
-            Resource: "*"
-          - 
-            Sid: "Allow use of the key"
-            Effect: "Allow"
-            Principal: 
-              AWS: DataRepDevGroup
-            Action: 
-              - "kms:Encrypt"
-              - "kms:Decrypt"
-              - "kms:ReEncrypt*"
-              - "kms:GenerateDataKey*"
-              - "kms:DescribeKey"
             Resource: "*"
