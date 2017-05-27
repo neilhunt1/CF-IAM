@@ -50,11 +50,18 @@ Resources:
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
-        - Effect: Allow
+        - 
+          Effect: Allow
           Action:
           - cloudformation:*
           Resource:
             !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/DataRep-${EnvType}-*
+        - 
+          Effect: Allow
+          Action:
+          - ec2:CreateVolume
+          Resource:
+            !Sub arn:aws:${AWS::Region}:${AWS::AccountId}:volume/*
   DataRepGroup:
     Type: AWS::IAM::Group
     Properties:
