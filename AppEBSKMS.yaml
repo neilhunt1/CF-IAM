@@ -12,7 +12,15 @@ Parameters:
       - INT
       - PERF
       - PROD
+  SecurityStack:
+    Description: Stack from which to retrieve security values
+    Type: String
 Resources:
-  DataRepS3Bucket:
-    Type: AWS::S3::Bucket
-    DeletionPolicy: Delete
+  DataRepEBSVol1
+    Type: AWS::EC2::Volume
+    Properties:
+      Size: 50
+      AvailabilityZone: us-east-1a
+      Encrypted: true
+      KmsKeyId: Fn::ImportValue:
+        !Sub "${SecurityStack}-KmsKeyId"
