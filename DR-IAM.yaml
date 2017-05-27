@@ -32,7 +32,7 @@ Resources:
               - "sts:AssumeRole"
       Path: "/DataRep/"
       ManagedPolicyArns: 
-      - !Ref DataRepDevPolicy
+      - !Ref DataRepIAMPolicy
   DataRepIAMPolicy:
     Type: AWS::IAM::ManagedPolicy
     Condition: LowerEnvironment
