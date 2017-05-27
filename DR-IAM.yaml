@@ -116,8 +116,7 @@ Resources:
             Sid: "Allow use of the key"
             Effect: "Allow"
             Principal: 
-              AWS: 
-                !Sub "arn:aws:iam::${AWS::AccountId}:role/DEMO-IAMFull"
+              AWS: Ref: DataRepCFRole
             Action: 
               - "kms:Encrypt"
               - "kms:Decrypt"
