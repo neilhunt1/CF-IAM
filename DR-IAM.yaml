@@ -61,7 +61,7 @@ Resources:
           Action:
           - ec2:CreateVolume
           Resource:
-            !Sub arn:aws:${AWS::Region}:${AWS::AccountId}:volume/*
+            !Sub arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:volume/*
   DataRepGroup:
     Type: AWS::IAM::Group
     Properties:
