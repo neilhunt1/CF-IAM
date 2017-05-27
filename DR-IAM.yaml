@@ -33,35 +33,11 @@ Resources:
       Path: "/DataRep/"
       ManagedPolicyArns: 
       - !Ref DataRepDevPolicy
-  DataRepProdPolicy:
-    Type: AWS::IAM::ManagedPolicy
-    Condition: CreateProdResources
-    Properties:
-      Description: "Policy for DataRep Production"
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-        - Effect: Allow
-          Action:
-          - cloudformation:CreateChangeSet
-          - cloudformation:CreateStack
-          - cloudformation:DescribeAccountLimits
-          - cloudformation:DescribeChangeSet
-          - cloudformation:DescribeStackEvents
-          - cloudformation:DescribeStackResource
-          - cloudformation:DescribeStackResources
-          - cloudformation:DescribeStacks
-          - cloudformation:GetStackPolicy
-          - cloudformation:ListChangeSets
-          - cloudformation:ListStackResources
-          - cloudformation:ListStacks
-          Resource:
-            !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/DataRep-PROD-*
-  DataRepDevPolicy:
+  DataRepIAMPolicy:
     Type: AWS::IAM::ManagedPolicy
     Condition: LowerEnvironment
     Properties:
-      Description: "Policy for DataRep Development"
+      Description: "Managed IAM policy for DataRep"
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -69,21 +45,13 @@ Resources:
           Action:
           - cloudformation:*
           Resource:
-            !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/DataRep-DEV-*
-  DataRepDevGroup:
-    Condition: LowerEnvironment
+            !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/DataRep-${EnvType}-*
+  DataRepGroup:
     Type: AWS::IAM::Group
     Properties:
       Path: "/DataRep/"
       ManagedPolicyArns: 
-      - !Ref DataRepDevPolicy
-  DataRepProdGroup:
-    Condition: CreateProdResources
-    Type: AWS::IAM::Group
-    Properties:
-      Path: "/DataRep/"
-      ManagedPolicyArns: 
-      - !Ref DataRepProdPolicy
+      - !Ref DataRepIAMPolicy
   DataRepKMSKey: 
     Type: "AWS::KMS::Key"
     Properties: 
