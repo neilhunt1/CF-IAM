@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Metadata: 
+  License: Apache-2.0
+  Description: 'AWS CloudFormation template for DataRep security'
+Parameters: 
+  EnvType: 
+    Description: Environment type.
+    Default: DEV
+    Type: String
+    AllowedValues: 
+      - DEV
+      - INT
+      - PERF
+      - PROD
+Resources:
+  DataRepS3Bucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
