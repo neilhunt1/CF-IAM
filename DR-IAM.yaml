@@ -62,6 +62,7 @@ Resources:
           - ec2:CreateVolume
           - ec2:DescribeVolume
           - ec2:ModifyVolume
+          - ec2:DescribeVolumes
           Resource:
             !Sub arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:volume/*
   DataRepGroup:
